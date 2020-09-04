@@ -70,6 +70,51 @@ public interface AST {
         }
     }
 
+    public static class PowExp extends CompoundArithExp {
+        public PowExp(List<Exp> args) {
+            super(args);
+        }
+        public Object accept(Visitor visitor) {
+            return visitor.visit(this);
+        }
+    }
+
+    public static class MrecExp extends CompoundArithExp {
+        public MrecExp(List<Exp> args) {
+            super(args);
+        }
+        public Object accept(Visitor visitor) {
+            return visitor.visit(this);
+        }
+    }
+
+    public static class MclrExp extends CompoundArithExp {
+        public MclrExp(List<Exp> args) {
+            super(args);
+        }
+        public Object accept(Visitor visitor) {
+            return visitor.visit(this);
+        }
+    }
+
+    public static class MaddExp extends CompoundArithExp {
+        public MaddExp(List<Exp> args) {
+            super(args);
+        }
+        public Object accept(Visitor visitor) {
+            return visitor.visit(this);
+        }
+    }
+
+    public static class MsubExp extends CompoundArithExp {
+        public MsubExp(List<Exp> args) {
+            super(args);
+        }
+        public Object accept(Visitor visitor) {
+            return visitor.visit(this);
+        }
+    }
+
     public static class SubExp extends CompoundArithExp {
         public SubExp(List<Exp> args) {
             super(args);
@@ -104,6 +149,12 @@ public interface AST {
         public T visit(AST.SubExp e);
         public T visit(AST.MultExp e);
         public T visit(AST.DivExp e);
+        public T visit(AST.PowExp e);
+        public T visit(AST.MrecExp e);
+        public T visit(AST.MclrExp e);
+        public T visit(AST.MaddExp e);
+        public T visit(AST.MsubExp e);
         public T visit(AST.Program p);
+
     }	
 }

@@ -12,7 +12,7 @@ public class Printer {
         public String visit(Program p) {
             return (String) p.e().accept(this);
         }
-		
+
         public String visit(NumExp e) {
             return "" + e.v();
         }
@@ -41,6 +41,41 @@ public class Printer {
         public String visit(DivExp e) {
             String result = "(/";
             for(AST.Exp exp : e.all()) 
+                result += " " + exp.accept(this);
+            return result + ")";
+        }
+
+        public String visit(PowExp e) {
+            String result = "(pow";
+            for(AST.Exp exp : e.all())
+                result += " " + exp.accept(this);
+            return result + ")";
+        }
+
+        public String visit(MrecExp e) {
+            String result = "(Mrec";
+            for(AST.Exp exp : e.all())
+                result += " " + exp.accept(this);
+            return result + ")";
+        }
+
+        public String visit(MclrExp e) {
+            String result = "(Mclr";
+            for(AST.Exp exp : e.all())
+                result += " " + exp.accept(this);
+            return result + ")";
+        }
+
+        public String visit(MaddExp e) {
+            String result = "(M+";
+            for(AST.Exp exp : e.all())
+                result += " " + exp.accept(this);
+            return result + ")";
+        }
+
+        public String visit(MsubExp e) {
+            String result = "(M-";
+            for(AST.Exp exp : e.all())
                 result += " " + exp.accept(this);
             return result + ")";
         }

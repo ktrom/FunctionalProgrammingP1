@@ -56,6 +56,33 @@ public class Evaluator implements Visitor<Value> {
     }
 
     @Override
+    public Value visit(PowExp e) {
+        List<Exp> operands = e.all();
+        NumVal lVal = (NumVal) operands.get(0).accept(this);
+        double result = lVal.v();
+        for(int i=1; i<operands.size(); i++) {
+            NumVal rVal = (NumVal) operands.get(i).accept(this);
+            if (rVal.v() < 0) {
+                return new DynamicError("error");
+            }
+            result = Math.pow(result, rVal.v()); //Semantics of MultExp.
+        }
+        return new NumVal(result);
+    }
+
+    @Override
+    public Value visit(MaddExp e) {
+        List<Exp> operands = e.all();
+        double result = 0;
+        for(Exp exp: operands) {
+            NumVal intermediate = (NumVal) exp.accept(this); // Dynamic type-checking
+            result += intermediate.v(); //Semantics of AddExp in terms of the target language.
+        }
+        record = new NumVal(record.v() + result);
+        return record;
+    }
+
+    @Override
     public Value visit(Program p) {
         return (Value) p.e().accept(this);
     }
@@ -70,5 +97,28 @@ public class Evaluator implements Visitor<Value> {
             result = result - rVal.v();
         }
         return new NumVal(result);
+    }
+
+    @Override
+    public Value visit(MsubExp e) {
+        List<Exp> operands = e.all();
+        double result = 0;
+        for(Exp exp: operands) {
+            NumVal intermediate = (NumVal) exp.accept(this); // Dynamic type-checking
+            result -= intermediate.v(); //Semantics of AddExp in terms of the target language.
+        }
+        record = new NumVal(record.v() + result);
+        return record;
+    }
+
+    @Override
+    public Value visit(MclrExp e) {
+        record = new NumVal(0);
+        return record;
+    }
+
+    @Override
+    public Value visit(MrecExp e) {
+        return record;
     }
 }

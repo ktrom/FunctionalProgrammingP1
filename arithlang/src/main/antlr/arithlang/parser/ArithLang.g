@@ -12,6 +12,11 @@ grammar ArithLang;
         | s=subexp { $ast = $s.ast; }
         | m=multexp { $ast = $m.ast; }
         | d=divexp { $ast = $d.ast; }
+        | p=powexp { $ast = $p.ast; }
+        | mc=mclrexp { $ast = $mc.ast; }
+        | mr=mrecexp { $ast = $mr.ast; }
+        | ma=maddexp { $ast = $ma.ast; }
+        | ms=msubexp { $ast = $ms.ast; }
         ;
   
  numexp returns [NumExp ast]:
@@ -57,6 +62,42 @@ grammar ArithLang;
  		')' { $ast = new DivExp($list); }
  		;
 
+  powexp returns [PowExp ast]
+         locals [ArrayList<Exp> list]
+  		@init { $list = new ArrayList<Exp>(); } :
+  		'(' 'pow'
+  		    e=exp { $list.add($e.ast); }
+  		    ( e=exp { $list.add($e.ast); } )+
+  		')' { $ast = new PowExp($list); }
+  		;
+
+    mrecexp returns [MrecExp ast]
+         locals [ArrayList<Exp> list]
+  		@init { $list = new ArrayList<Exp>(); } :
+  		'(' 'Mrec'
+  		')' { $ast = new MrecExp($list); }
+  		;
+
+  	mclrexp returns [MclrExp ast]
+             locals [ArrayList<Exp> list]
+      		@init { $list = new ArrayList<Exp>(); } :
+      		'(' 'Mclr' ')' { $ast = new MclrExp($list); }
+      		;
+    maddexp returns [MaddExp ast]
+             locals [ArrayList<Exp> list]
+      		@init { $list = new ArrayList<Exp>(); } :
+      		'(' 'M+'
+      		    ( e=exp { $list.add($e.ast); } )+
+      		')' { $ast = new MaddExp($list); }
+      		;
+
+    msubexp returns [MsubExp ast]
+             locals [ArrayList<Exp> list]
+      		@init { $list = new ArrayList<Exp>(); } :
+      		'(' 'M-'
+      		    ( e=exp { $list.add($e.ast); } )+
+      		')' { $ast = new MsubExp($list); }
+      		;
 
  // Lexical Specification of this Programming Language
  //  - lexical specification rules start with uppercase
